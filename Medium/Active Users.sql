@@ -75,3 +75,12 @@ inner join accounts a
 on t1.id = a.id
 where datediff(t1.date_5,login_date) = 4
 order by id
+
+----------------- ANOTHER WAY -------------------------------
+
+select ab.id,ab.name from
+(select a.id,c.name,a.login_date as login1,b.login_date as login2 from logins a 
+join logins b on a.id = b.id
+join accounts c on a.id = c.id 
+where a.login_date - b.login_date = 1) as ab
+group by ab.id,ab.name having count(1) >= 5
