@@ -85,4 +85,15 @@ select activity
 from t1 right join t2
 on t1.total = t2.total
 where t1.total is null
+
+
+
+------------------------------------------ ANOTHER SOLUTION ---------------------------------------
+
+with temp as
+(select a.activity,row_number() over(order by a.rep asc) as rn from
+(select activity,count(1) as rep from friends group by activity) as a
+)
+select temp.activity from temp  
+where temp.rn <> 1 and temp.rn <> (select max(rn) from temp)
 	
